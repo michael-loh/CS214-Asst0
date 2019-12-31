@@ -1,0 +1,59 @@
+Walking in GCC's Footsteps:
+
+
+Note: This project is individual. Be sure to do your own work.
+
+Abstract
+    Of all the tasks you will need to complete in time or behaviors to encode, scanning and parsing tend to crop up over and over again in some form. When scanning you take a sequence of characters and break them in to tokens and when parsing you evaluate the tokens based on some rule set in order to determine if they are not only used correctly, but also what computations they represent. In this assignment you'll get some practice with C by scanning and doing some simple parsing. This should also give you some insight in to interpreting what the C compiler tells you when it finds problems.
+
+    
+    
+Introduction    
+    The language you are working with consists of two kinds of operators: logical and arithmetic. The logical operators are: {AND, OR, NOT} and are applied to the values: {true, false}. The arithmetic operators are: {-, +, *, /} and are applied to the values: {1, 2, 3, 4, 5, 6, 7, 8, 9, 0}.
+
+    You'll receive all your tokens in a single command line argument, and your code should take exactly one argument. You can count on whitespace (e.g. ' ') to divide tokens, however it may behoove you to make your delimiter parameterizable for future use. The null terminator ('\0') will end your input and the line you are evaluating.
+    
+    Once you have detected all the tokens, you next should make sure the tokens make sense. This language is an infix language, meaning all binary operators appear between their operands:
+        Legal expressions:        Illegal expressions:
+        1 + 2                               1 +2
+        4 - 9                                4 -
+        true AND false                True AND false
+        false OR true                  fals OR 1
+
+    Logical NOT is your only unary operator. Its argument should appear directly after it: NOT false.
+    
+    If there are multiple expressions per line, they should be separated by a semicolon (';'):
+        1 + 2; 9 * 2
+        true AND true; 9 / 3
+
+    Output should consist of:
+        For a correct expression:
+            Found <X> expressions: <N> logical and <M> arithmetic.
+            OK.
+            
+        For an incorrect expression:
+            Found <X> expressions; <N> logical and <M> arithmetic.
+            Error: <error type> in expression <expression number>: <description> in:
+                <expression error was found in, or expression fragment/token>
+    
+        For instance:
+            > ./check "1 +2"
+            Found 1 expressions: 0 logical and 0 arithmetic.
+            Error: Parse error in expression 0: unknown operator
+                "+2"
+                
+            > ./check ""
+            Found 1 expressions: 0 logical and 0 arithmetic.
+            Error: Scan error in expression 0: incomplete expression
+                ""
+            
+            > ./check "true AND false OR true"
+            Found 1 expressions: 1 logical and 0 arithmetic.    
+            Error: Parse error in expression 0: expression was not ended
+(Note: 'expression was not ended' is not one of the canonical errors listed below in the FAQ, however, since it is here, I am I fine if you use it. Truly, this error ought to be an 'incomplete expression', since it is missing the semicolon required to end the expression)
+               "true AND false OR"
+            Error: Parse error in expression 0: unexpected operator
+                "OR true"
+                
+            You should continue past the first error and detect as much as you can.
+            You may very well have multiple incorrect and correct expressions in a single line.
